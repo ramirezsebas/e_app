@@ -12,6 +12,7 @@ class AnalisisScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Analisis'),
+        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {},
