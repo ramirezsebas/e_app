@@ -1,8 +1,12 @@
+import 'package:e_app/app/core/extensions/formatter_extension.dart';
 import 'package:e_app/app/core/widgets/e_center_pie_chart_label.dart';
 import 'package:e_app/app/core/widgets/e_date_selector.dart';
+import 'package:e_app/app/domain/models/expense_model.dart';
+import 'package:e_app/app/presentation/cubits/expenses/expenses_cubit.dart';
 import 'package:e_app/app/presentation/screens/selected_category_expense_analytics_screen.dart';
 import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 class ExpenseAnalyticsScreen extends StatelessWidget {
@@ -100,95 +104,156 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 50,
-              child: EDateSelector(
-                months: _months,
-                year: _year,
-                selectedMonth: _selectedMonth,
-                onMonthSelected: (index) {
-                  setState(() {
-                    _selectedMonth = index + 1;
-                  });
-                },
+      body: BlocBuilder<ExpensesCubit, ExpensesState>(
+        builder: (context, state) {
+          return switch (state.runtimeType) {
+            ExpensesInitial => const Center(
+                child: CircularProgressIndicator(),
               ),
+            ExpensesLoading => const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ExpensesLoaded => _buildBody((state as ExpensesLoaded).expenses),
+            ExpensesError => Center(
+                child: Text((state as ExpensesError).message),
+              ),
+            _ => const SizedBox.shrink(),
+          };
+        },
+      ),
+    );
+  }
+
+  Widget _buildBody(List<ExpenseModel> expenses) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 50,
+          child: EDateSelector(
+            months: _months,
+            year: _year,
+            selectedMonth: _selectedMonth,
+            onMonthSelected: (index) {
+              setState(() {
+                _selectedMonth = index + 1;
+              });
+            },
+          ),
+        ),
+        const SizedBox(height: 20),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
             ),
-            const SizedBox(height: 20),
-            Stack(
-              alignment: Alignment.center,
+            child: Column(
               children: [
-                PieChart(
-                  dataMap: dataMap,
-                  legendOptions: const LegendOptions(
-                    showLegends: false,
-                  ),
-                  chartValuesOptions: const ChartValuesOptions(
-                    showChartValueBackground: false,
-                    showChartValues: false,
-                  ),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    PieChart(
+                      dataMap: dataMap,
+                      legendOptions: const LegendOptions(
+                        showLegends: false,
+                      ),
+                      chartValuesOptions: const ChartValuesOptions(
+                        showChartValueBackground: false,
+                        showChartValues: false,
+                      ),
+                    ),
+                    Align(
+                      child: ECenterPieChartLabel(
+                        label: _months[_selectedMonth - 1],
+                        description: 'Gs. 2.000.000',
+                      ),
+                    ),
+                  ],
                 ),
-                Align(
-                  child: ECenterPieChartLabel(
-                    label: _months[_selectedMonth - 1],
-                    description: 'Gs. 2.000.000',
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: expenses.length,
+                    itemBuilder: (context, index) {
+                      final expense = expenses[index];
+                      return ListTile(
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: Image.asset(
+                            expense.image,
+                          ),
+                        ),
+                        title: Text(
+                          expense.category,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        trailing: Text(
+                          expense.amount.toGs(),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
             ),
-            ListTile(
-              leading: Assets.icons.restaurantBarCategory.image(),
-              title: const Text(
-                'Restaurantes y bares',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              trailing: const Text(
-                'Gs. 2.000.000',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Assets.icons.shoppingCategory.image(),
-              title: const Text(
-                'Compras',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              trailing: const Text(
-                'Gs. 2.000.000',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Assets.icons.transportationCategory.image(),
-              title: const Text(
-                'Transporte',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              trailing: const Text(
-                'Gs. 2.000.000',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+        // ListTile(
+        //   leading: Assets.icons.restaurantBarCategory.image(),
+        //   title: const Text(
+        //     'Restaurantes y bares',
+        //     style: TextStyle(
+        //       fontWeight: FontWeight.w400,
+        //     ),
+        //   ),
+        //   trailing: const Text(
+        //     'Gs. 2.000.000',
+        //     style: TextStyle(
+        //       color: Colors.black,
+        //       fontWeight: FontWeight.w400,
+        //     ),
+        //   ),
+        // ),
+        // ListTile(
+        //   leading: Assets.icons.shoppingCategory.image(),
+        //   title: const Text(
+        //     'Compras',
+        //     style: TextStyle(
+        //       fontWeight: FontWeight.w400,
+        //     ),
+        //   ),
+        //   trailing: const Text(
+        //     'Gs. 2.000.000',
+        //     style: TextStyle(
+        //       color: Colors.black,
+        //       fontWeight: FontWeight.w400,
+        //     ),
+        //   ),
+        // ),
+        // ListTile(
+        //   leading: Assets.icons.transportationCategory.image(),
+        //   title: const Text(
+        //     'Transporte',
+        //     style: TextStyle(
+        //       fontWeight: FontWeight.w400,
+        //     ),
+        //   ),
+        //   trailing: const Text(
+        //     'Gs. 2.000.000',
+        //     style: TextStyle(
+        //       color: Colors.black,
+        //       fontWeight: FontWeight.w400,
+        //     ),
+        //   ),
+        // ),
+      ],
     );
   }
 }
