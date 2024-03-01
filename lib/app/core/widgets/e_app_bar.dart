@@ -25,21 +25,30 @@ class EAppBar extends StatelessWidget implements PreferredSizeWidget {
           margin: const EdgeInsets.only(
             bottom: 80,
           ),
-          child: AccountBalance(
-            balance: context.select<AccountBalanceCubit, double>(
-              (cubit) => cubit.state.balance!,
-            ),
-            currency: context.select<AccountBalanceCubit, String>(
-              (cubit) => cubit.state.currency!,
-            ),
-            isHidden: context.select<AccountBalanceCubit, bool>(
-              (cubit) => cubit.state.isHidden!,
-            ),
-            onToggle: context.read<AccountBalanceCubit>().toggleAccountBalance,
+          child: BlocBuilder<AccountBalanceCubit, AccountBalanceState>(
+            builder: (context, state) {
+              return switch (state.status) {
+                AccountBalanceStatus.initial => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                AccountBalanceStatus.loading => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                AccountBalanceStatus.loaded => AccountBalance(
+                    balance: state.account!.balance,
+                    isHidden: state.account!.isHidden,
+                    currency: state.account!.currency,
+                    onToggle:
+                        context.read<AccountBalanceCubit>().hideAccountBalance,
+                  ),
+                AccountBalanceStatus.error => Center(
+                    child: Text(state.error.toString()),
+                  ),
+              };
+            },
           ),
         ),
       ),
-      elevation: 0,
       flexibleSpace: Container(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(

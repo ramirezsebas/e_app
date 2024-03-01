@@ -1,5 +1,8 @@
 import 'package:e_app/app/core/widgets/e_app_bar.dart';
+import 'package:e_app/app/data/repositories/account_repository.dart';
+import 'package:e_app/app/data/repositories/movements_repository.dart';
 import 'package:e_app/app/presentation/cubits/account_balance/account_balance_cubit.dart';
+import 'package:e_app/app/presentation/cubits/movements/movements_cubit.dart';
 import 'package:e_app/app/presentation/screens/screens.dart';
 import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +14,19 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AccountBalanceCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AccountBalanceCubit(
+            accountRepository: AccountRepository(),
+          )..getAccount(),
+        ),
+        BlocProvider(
+          create: (context) => MovementsCubit(
+            movementsRepository: MovementsRepository(),
+          )..getMovements(),
+        ),
+      ],
       child: MaterialApp(
         theme: _buildTheme(Brightness.light),
         title: 'E App',
@@ -98,7 +112,7 @@ class AccountBalance extends StatelessWidget {
   });
 
   final String currency;
-  final double balance;
+  final num balance;
   final bool isHidden;
   final void Function()? onToggle;
 
@@ -107,7 +121,13 @@ class AccountBalance extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Disponible'),
+        const Text(
+          'Disponible',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+          ),
+        ),
         const SizedBox(
           height: 10,
         ),
@@ -115,10 +135,11 @@ class AccountBalance extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '$currency ${isHidden ? balance.toString().replaceAll(
-                    RegExp(r'\d'),
-                    '*',
-                  ) : balance}',
+              '$currency ${_formatHiddenBalance()}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 28,
+              ),
             ),
             const SizedBox(
               width: 10,
@@ -128,10 +149,23 @@ class AccountBalance extends StatelessWidget {
               icon: isHidden
                   ? const Icon(Icons.visibility)
                   : const Icon(Icons.visibility_off),
+              color: Colors.white,
             ),
           ],
         ),
       ],
     );
+  }
+
+  String _formatHiddenBalance() {
+    return isHidden
+        ? balance
+            .toString()
+            .replaceAll(
+              RegExp(r'\d'),
+              '*',
+            )
+            .replaceAll('.', '*')
+        : balance.toString();
   }
 }

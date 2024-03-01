@@ -1,26 +1,35 @@
 part of 'account_balance_cubit.dart';
 
+enum AccountBalanceStatus {
+  initial,
+  loading,
+  loaded,
+  error,
+}
+
 class AccountBalanceState extends Equatable {
   const AccountBalanceState({
-    this.balance = 2000000,
-    this.currency = 'Gs',
-    this.isHidden = false,
+    this.account,
+    this.error,
+    this.status = AccountBalanceStatus.initial,
   });
 
-  final double? balance;
-  final String? currency;
-  final bool? isHidden;
+  final AccountModel? account;
+  final AccountBalanceStatus status;
+  final Object? error;
 
   AccountBalanceState copyWith({
-    double? balance,
-    bool? isHidden,
+    AccountModel? account,
+    AccountBalanceStatus? status,
+    Object? error,
   }) {
     return AccountBalanceState(
-      balance: balance ?? this.balance,
-      isHidden: isHidden ?? this.isHidden,
+      account: account ?? this.account,
+      status: status ?? this.status,
+      error: error ?? this.error,
     );
   }
 
   @override
-  List<Object?> get props => [balance, isHidden];
+  List<Object?> get props => [account, status, error];
 }
