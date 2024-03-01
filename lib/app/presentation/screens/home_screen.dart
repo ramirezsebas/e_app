@@ -1,5 +1,8 @@
+import 'package:e_app/app.dart';
 import 'package:e_app/app/core/widgets/e_app_bar.dart';
+import 'package:e_app/app/presentation/cubits/account_balance/account_balance_cubit.dart';
 import 'package:e_app/app/presentation/cubits/movements/movements_cubit.dart';
+import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +14,36 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const EAppBar(),
+      appBar: EAppBar(
+        title: Assets.images.logo.image(),
+        body: Container(
+          margin: const EdgeInsets.only(
+            bottom: 80,
+          ),
+          child: BlocBuilder<AccountBalanceCubit, AccountBalanceState>(
+            builder: (context, state) {
+              return switch (state.status) {
+                AccountBalanceStatus.initial => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                AccountBalanceStatus.loading => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                AccountBalanceStatus.loaded => AccountBalance(
+                    balance: state.account!.balance,
+                    isHidden: state.account!.isHidden,
+                    currency: state.account!.currency,
+                    onToggle:
+                        context.read<AccountBalanceCubit>().hideAccountBalance,
+                  ),
+                AccountBalanceStatus.error => Center(
+                    child: Text(state.error.toString()),
+                  ),
+              };
+            },
+          ),
+        ),
+      ),
       body: BlocBuilder<MovementsCubit, MovementsState>(
         builder: (context, state) {
           return switch (state.runtimeType) {

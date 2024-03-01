@@ -1,4 +1,6 @@
+import 'package:e_app/app/core/widgets/e_center_pie_chart_label.dart';
 import 'package:e_app/app/core/widgets/e_date_selector.dart';
+import 'package:e_app/app/presentation/screens/detail_movement_screen.dart';
 import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
@@ -63,9 +65,9 @@ class _ExpenseAnalyticsViewState
   var _selectedMonth = DateTime.now().month;
 
   Map<String, double> dataMap = {
-    "Restaurante y bares": 5,
-    "Compras": 3,
-    "Transporte": 2,
+    'Restaurante y bares': 5,
+    'Compras': 3,
+    'Transporte': 2,
   };
 
   @override
@@ -74,6 +76,12 @@ class _ExpenseAnalyticsViewState
       appBar: AppBar(
         title: const Text('Gastos'),
         centerTitle: true,
+        leading: IconButton(
+          icon: Assets.icons.backArrow.image(),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         actions: [
           IconButton(
             onPressed: () {},
@@ -92,7 +100,14 @@ class _ExpenseAnalyticsViewState
           ),
           minimumSize: Size(MediaQuery.of(context).size.width * 0.9, 65),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute<void>(
+              builder: (context) => const DetailMovementScreen(),
+            ),
+          );
+        },
         child: const Text(
           'Ver Extracto',
           style: TextStyle(
@@ -131,7 +146,7 @@ class _ExpenseAnalyticsViewState
                   ),
                 ),
                 Align(
-                  child: CenterPieChartLabel(
+                  child: ECenterPieChartLabel(
                     label: widget.category,
                     description: widget.spending,
                   ),
@@ -190,51 +205,6 @@ class _ExpenseAnalyticsViewState
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CenterPieChartLabel extends StatelessWidget {
-  const CenterPieChartLabel({
-    required String label,
-    required String description,
-    super.key,
-  })  : _description = description,
-        _label = label;
-
-  final String _label;
-  final String _description;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: Color(0xffF7F0ED),
-      ),
-      height: 200,
-      width: 200,
-      alignment: Alignment.center,
-      child: RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          text: _label,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-          children: [
-            TextSpan(
-              text: '\n$_description',
-              style: const TextStyle(
-                color: Color(0xffF00E51),
-                fontWeight: FontWeight.bold,
               ),
             ),
           ],

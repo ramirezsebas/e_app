@@ -42,9 +42,9 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
   var _selectedMonth = DateTime.now().month;
 
   Map<String, double> dataMap = {
-    "Restaurante y bares": 5,
-    "Compras": 3,
-    "Transporte": 2,
+    'Restaurante y bares': 5,
+    'Compras': 3,
+    'Transporte': 2,
   };
 
   @override
@@ -53,6 +53,12 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
       appBar: AppBar(
         title: const Text('Gastos'),
         centerTitle: true,
+        leading: IconButton(
+          icon: Assets.icons.backArrow.image(),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         actions: [
           IconButton(
             onPressed: () {},

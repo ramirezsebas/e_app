@@ -1,11 +1,17 @@
-import 'package:e_app/app.dart';
-import 'package:e_app/app/presentation/cubits/account_balance/account_balance_cubit.dart';
 import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const EAppBar({super.key});
+  const EAppBar({
+    required this.title,
+    this.leading,
+    this.body,
+    super.key,
+  });
+
+  final Widget title;
+  final Widget? leading;
+  final Widget? body;
 
   static const _height = 300.0;
 
@@ -18,36 +24,12 @@ class EAppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: Assets.icons.drawer.image(),
         ),
       ],
-      title: Assets.images.logo.image(),
+      leading: leading,
+      automaticallyImplyLeading: false,
+      title: title,
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(_height),
-        child: Container(
-          margin: const EdgeInsets.only(
-            bottom: 80,
-          ),
-          child: BlocBuilder<AccountBalanceCubit, AccountBalanceState>(
-            builder: (context, state) {
-              return switch (state.status) {
-                AccountBalanceStatus.initial => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                AccountBalanceStatus.loading => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                AccountBalanceStatus.loaded => AccountBalance(
-                    balance: state.account!.balance,
-                    isHidden: state.account!.isHidden,
-                    currency: state.account!.currency,
-                    onToggle:
-                        context.read<AccountBalanceCubit>().hideAccountBalance,
-                  ),
-                AccountBalanceStatus.error => Center(
-                    child: Text(state.error.toString()),
-                  ),
-              };
-            },
-          ),
-        ),
+        child: body ?? const SizedBox(),
       ),
       flexibleSpace: Container(
         decoration: const BoxDecoration(
