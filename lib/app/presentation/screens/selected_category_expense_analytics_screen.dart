@@ -1,29 +1,50 @@
-import 'package:e_app/app/core/widgets/e_center_pie_chart_label.dart';
 import 'package:e_app/app/core/widgets/e_date_selector.dart';
-import 'package:e_app/app/presentation/screens/selected_category_expense_analytics_screen.dart';
 import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
+
 import 'package:pie_chart/pie_chart.dart';
 
-class ExpenseAnalyticsScreen extends StatelessWidget {
-  const ExpenseAnalyticsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const ExpenseAnalyticsView();
-  }
-}
-
-class ExpenseAnalyticsView extends StatefulWidget {
-  const ExpenseAnalyticsView({
+class SelectedCategoryExpenseAnalyticsScreen extends StatelessWidget {
+  const SelectedCategoryExpenseAnalyticsScreen({
+    required this.category,
+    required this.spending,
+    required this.icon,
     super.key,
   });
 
+  final String category;
+  final String spending;
+  final String icon;
+
   @override
-  State<ExpenseAnalyticsView> createState() => _ExpenseAnalyticsViewState();
+  Widget build(BuildContext context) {
+    return SelectedCategoryExpenseAnalyticsView(
+      category: category,
+      spending: spending,
+      icon: icon,
+    );
+  }
 }
 
-class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
+class SelectedCategoryExpenseAnalyticsView extends StatefulWidget {
+  const SelectedCategoryExpenseAnalyticsView({
+    required this.category,
+    required this.spending,
+    required this.icon,
+    super.key,
+  });
+
+  final String category;
+  final String spending;
+  final String icon;
+
+  @override
+  State<SelectedCategoryExpenseAnalyticsView> createState() =>
+      _ExpenseAnalyticsViewState();
+}
+
+class _ExpenseAnalyticsViewState
+    extends State<SelectedCategoryExpenseAnalyticsView> {
   final _year = '2022';
   final _months = [
     'Enero',
@@ -71,18 +92,7 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
           ),
           minimumSize: Size(MediaQuery.of(context).size.width * 0.9, 65),
         ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute<void>(
-              builder: (context) => SelectedCategoryExpenseAnalyticsView(
-                category: 'Restaurantes y bares',
-                spending: 'Gs. 2.000.000',
-                icon: Assets.icons.restaurantBarCategory.path,
-              ),
-            ),
-          );
-        },
+        onPressed: () {},
         child: const Text(
           'Ver Extracto',
           style: TextStyle(
@@ -121,15 +131,17 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
                   ),
                 ),
                 Align(
-                  child: ECenterPieChartLabel(
-                    label: _months[_selectedMonth - 1],
-                    description: 'Gs. 2.000.000',
+                  child: CenterPieChartLabel(
+                    label: widget.category,
+                    description: widget.spending,
                   ),
                 ),
               ],
             ),
             ListTile(
-              leading: Assets.icons.restaurantBarCategory.image(),
+              leading: Image(
+                image: AssetImage(widget.icon),
+              ),
               title: const Text(
                 'Restaurantes y bares',
                 style: TextStyle(
@@ -145,7 +157,9 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
               ),
             ),
             ListTile(
-              leading: Assets.icons.shoppingCategory.image(),
+              leading: Image(
+                image: AssetImage(widget.icon),
+              ),
               title: const Text(
                 'Compras',
                 style: TextStyle(
@@ -161,7 +175,9 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
               ),
             ),
             ListTile(
-              leading: Assets.icons.transportationCategory.image(),
+              leading: Image(
+                image: AssetImage(widget.icon),
+              ),
               title: const Text(
                 'Transporte',
                 style: TextStyle(
@@ -174,6 +190,51 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
                   color: Colors.black,
                   fontWeight: FontWeight.w400,
                 ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CenterPieChartLabel extends StatelessWidget {
+  const CenterPieChartLabel({
+    required String label,
+    required String description,
+    super.key,
+  })  : _description = description,
+        _label = label;
+
+  final String _label;
+  final String _description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: Color(0xffF7F0ED),
+      ),
+      height: 200,
+      width: 200,
+      alignment: Alignment.center,
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          text: _label,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+          children: [
+            TextSpan(
+              text: '\n$_description',
+              style: const TextStyle(
+                color: Color(0xffF00E51),
+                fontWeight: FontWeight.bold,
               ),
             ),
           ],
