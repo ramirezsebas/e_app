@@ -158,14 +158,14 @@ class AccountBalance extends StatelessWidget {
   }
 
   String _formatHiddenBalance() {
+    final balanceString = balance.toString();
     return isHidden
-        ? balance
-            .toString()
+        ? balanceString
             .replaceAll(
               RegExp(r'\d'),
               '*',
             )
             .replaceAll('.', '*')
-        : balance.toString();
+        : balanceString.substring(0, balanceString.indexOf('.'));
   }
 }
