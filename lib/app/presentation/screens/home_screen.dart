@@ -1,5 +1,6 @@
 // ignore_for_file: lines_longer_than_80_chars
 
+import 'package:e_app/app/core/extensions/date_extension.dart';
 import 'package:e_app/app/core/extensions/formatter_extension.dart';
 import 'package:e_app/app/core/widgets/account_balance.dart';
 import 'package:e_app/app/core/widgets/e_app_bar.dart';
@@ -115,7 +116,7 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  movement.date,
+                                  movement.date.toFormattedString(),
                                   style: const TextStyle(
                                     color: Colors.grey,
                                     fontSize: 12,

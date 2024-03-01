@@ -19,7 +19,7 @@ class MovementeModel extends Equatable {
       amount: json['amount'] as num,
       currency: json['currency'] as String,
       description: json['description'] as String,
-      date: json['date'] as String,
+      date: DateTime.parse(json['date'] as String),
       sender: json['sender'] as String,
       type:
           json['type'] == 'income' ? MovementType.income : MovementType.expense,
@@ -30,7 +30,7 @@ class MovementeModel extends Equatable {
   final num amount;
   final String currency;
   final String description;
-  final String date;
+  final DateTime date;
   final String sender;
   final MovementType type;
 
