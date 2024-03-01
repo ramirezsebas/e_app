@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 enum CurrencyLocation { start, end }
 
 extension NumX on num {
-  String toCurrency(
+  String toGs(
     String currency, {
     CurrencyLocation location = CurrencyLocation.start,
   }) {
@@ -11,9 +11,8 @@ extension NumX on num {
       locale: 'es',
       decimalDigits: 0,
       symbol: currency,
-      customPattern: location == CurrencyLocation.start
-          ? '\u00A4. #,###'
-          : '#,### \u00A4.',
+      customPattern:
+          location == CurrencyLocation.start ? "'Gs.' #,###" : "#,### 'Gs.'",
     ).format(this);
   }
 }

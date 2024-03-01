@@ -106,7 +106,7 @@ class HomeScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  '${movement.sign}${movement.amount.toCurrency(
+                                  '${movement.sign}${movement.amount.toGs(
                                     movement.currency,
                                     location: CurrencyLocation.end,
                                   )}',
