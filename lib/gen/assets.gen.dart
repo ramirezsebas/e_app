@@ -35,9 +35,21 @@ class $AssetsIconsGen {
   /// File path: assets/icons/income.png
   AssetGenImage get income => const AssetGenImage('assets/icons/income.png');
 
+  /// File path: assets/icons/restaurant_bar_category.png
+  AssetGenImage get restaurantBarCategory =>
+      const AssetGenImage('assets/icons/restaurant_bar_category.png');
+
+  /// File path: assets/icons/shopping_category.png
+  AssetGenImage get shoppingCategory =>
+      const AssetGenImage('assets/icons/shopping_category.png');
+
   /// File path: assets/icons/transfers.png
   AssetGenImage get transfers =>
       const AssetGenImage('assets/icons/transfers.png');
+
+  /// File path: assets/icons/transportation_category.png
+  AssetGenImage get transportationCategory =>
+      const AssetGenImage('assets/icons/transportation_category.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
@@ -48,7 +60,10 @@ class $AssetsIconsGen {
         expense,
         home,
         income,
-        transfers
+        restaurantBarCategory,
+        shoppingCategory,
+        transfers,
+        transportationCategory
       ];
 }
 
