@@ -23,6 +23,10 @@ class $AssetsIconsGen {
   AssetGenImage get analyticsShape =>
       const AssetGenImage('assets/icons/analytics_shape.png');
 
+  /// File path: assets/icons/back_arrow.png
+  AssetGenImage get backArrow =>
+      const AssetGenImage('assets/icons/back_arrow.png');
+
   /// File path: assets/icons/drawer.png
   AssetGenImage get drawer => const AssetGenImage('assets/icons/drawer.png');
 
@@ -56,6 +60,7 @@ class $AssetsIconsGen {
         account,
         analisis,
         analyticsShape,
+        backArrow,
         drawer,
         expense,
         home,
