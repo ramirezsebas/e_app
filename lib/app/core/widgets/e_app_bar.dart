@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class EAppBar extends StatelessWidget implements PreferredSizeWidget {
   const EAppBar({super.key});
 
+  static const _height = 300.0;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -18,7 +20,7 @@ class EAppBar extends StatelessWidget implements PreferredSizeWidget {
       ],
       title: Assets.images.logo.image(),
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(250),
+        preferredSize: const Size.fromHeight(_height),
         child: Container(
           margin: const EdgeInsets.only(
             bottom: 80,
@@ -60,5 +62,5 @@ class EAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(250);
+  Size get preferredSize => const Size.fromHeight(_height);
 }
