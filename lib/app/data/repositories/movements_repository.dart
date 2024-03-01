@@ -8,7 +8,7 @@ class MovementsRepository {
       amount: 200000,
       currency: 'Gs',
       description: 'Transferencia recibida',
-      date: 'Hoy',
+      date: '20/12/2023',
       sender: 'Juan Perez',
     ),
     MovementeModel(
@@ -16,7 +16,7 @@ class MovementsRepository {
       amount: 200000,
       currency: 'Gs',
       description: 'Transferencia recibida',
-      date: 'Hoy',
+      date: '20/12/2023',
       sender: 'Juan Perez',
     ),
     MovementeModel(
@@ -24,7 +24,7 @@ class MovementsRepository {
       amount: 200000,
       currency: 'Gs',
       description: 'Transferencia recibida',
-      date: 'Hoy',
+      date: '20/12/2023',
       sender: 'Juan Perez',
     ),
   ];
