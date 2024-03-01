@@ -18,24 +18,58 @@ class HomeScreen extends StatelessWidget {
           MovementsLoading => const Center(
               child: CircularProgressIndicator(),
             ),
-          MovementsLoaded => ListView.builder(
-              itemCount: (state as MovementsLoaded).movements.length,
-              itemBuilder: (context, index) {
-                final movement = state.movements[index];
-                return ListTile(
-                  leading: Image.asset(movement.image),
-                  title: Text(movement.sender),
-                  subtitle: Text(movement.description),
-                  trailing: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(movement.amount.toString()),
-                      Text(movement.date),
-                    ],
+          MovementsLoaded => Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 25,
+                vertical: 45,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Movimientos',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
-                );
-              },
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: (state as MovementsLoaded).movements.length,
+                      itemBuilder: (context, index) {
+                        final movement = state.movements[index];
+                        return ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: Image.asset(movement.image),
+                          title: Text(
+                            movement.sender,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Text(movement.description),
+                          trailing: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                '${movement.currency}. ${movement.amount}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(movement.date),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           MovementsError => Center(
               child: Text((state as MovementsError).error),
