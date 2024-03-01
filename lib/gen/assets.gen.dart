@@ -23,9 +23,18 @@ class $AssetsIconsGen {
   AssetGenImage get analyticsShape =>
       const AssetGenImage('assets/icons/analytics_shape.png');
 
+  /// File path: assets/icons/atm.png
+  AssetGenImage get atm => const AssetGenImage('assets/icons/atm.png');
+
   /// File path: assets/icons/back_arrow.png
   AssetGenImage get backArrow =>
       const AssetGenImage('assets/icons/back_arrow.png');
+
+  /// File path: assets/icons/bag.png
+  AssetGenImage get bag => const AssetGenImage('assets/icons/bag.png');
+
+  /// File path: assets/icons/bus.png
+  AssetGenImage get bus => const AssetGenImage('assets/icons/bus.png');
 
   /// File path: assets/icons/drawer.png
   AssetGenImage get drawer => const AssetGenImage('assets/icons/drawer.png');
@@ -33,11 +42,17 @@ class $AssetsIconsGen {
   /// File path: assets/icons/expense.png
   AssetGenImage get expense => const AssetGenImage('assets/icons/expense.png');
 
+  /// File path: assets/icons/heart.png
+  AssetGenImage get heart => const AssetGenImage('assets/icons/heart.png');
+
   /// File path: assets/icons/home.png
   AssetGenImage get home => const AssetGenImage('assets/icons/home.png');
 
   /// File path: assets/icons/income.png
   AssetGenImage get income => const AssetGenImage('assets/icons/income.png');
+
+  /// File path: assets/icons/mask.png
+  AssetGenImage get mask => const AssetGenImage('assets/icons/mask.png');
 
   /// File path: assets/icons/restaurant_bar_category.png
   AssetGenImage get restaurantBarCategory =>
@@ -60,11 +75,16 @@ class $AssetsIconsGen {
         account,
         analisis,
         analyticsShape,
+        atm,
         backArrow,
+        bag,
+        bus,
         drawer,
         expense,
+        heart,
         home,
         income,
+        mask,
         restaurantBarCategory,
         shoppingCategory,
         transfers,
