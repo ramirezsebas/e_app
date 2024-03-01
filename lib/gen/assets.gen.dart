@@ -19,6 +19,9 @@ class $AssetsIconsGen {
   AssetGenImage get analisis =>
       const AssetGenImage('assets/icons/analisis.png');
 
+  /// File path: assets/icons/drawer.png
+  AssetGenImage get drawer => const AssetGenImage('assets/icons/drawer.png');
+
   /// File path: assets/icons/home.png
   AssetGenImage get home => const AssetGenImage('assets/icons/home.png');
 
@@ -27,13 +30,25 @@ class $AssetsIconsGen {
       const AssetGenImage('assets/icons/transfers.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [account, analisis, home, transfers];
+  List<AssetGenImage> get values =>
+      [account, analisis, drawer, home, transfers];
+}
+
+class $AssetsImagesGen {
+  const $AssetsImagesGen();
+
+  /// File path: assets/images/logo.png
+  AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [logo];
 }
 
 class Assets {
   Assets._();
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
+  static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 
 class AssetGenImage {
