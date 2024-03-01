@@ -1,15 +1,31 @@
+import 'package:e_app/app/core/widgets/e_app_bar.dart';
+import 'package:e_app/app/presentation/cubits/account_balance/account_balance_cubit.dart';
 import 'package:e_app/app/presentation/screens/screens.dart';
 import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'E App',
-      home: MainScreen(),
+    return BlocProvider(
+      create: (context) => AccountBalanceCubit(),
+      child: MaterialApp(
+        theme: _buildTheme(Brightness.light),
+        title: 'E App',
+        home: const MainScreen(),
+      ),
+    );
+  }
+
+  ThemeData _buildTheme(Brightness brightness) {
+    final baseTheme = ThemeData(brightness: brightness);
+
+    return baseTheme.copyWith(
+      textTheme: GoogleFonts.poppinsTextTheme(baseTheme.textTheme),
     );
   }
 }
@@ -29,9 +45,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('E App'),
-      ),
+      appBar: const EAppBar(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xffF7F0ED),
         currentIndex: _selectedScreenIndex,
@@ -70,6 +84,54 @@ class _MainScreenState extends State<MainScreen> {
           AccountScreen(),
         ],
       ),
+    );
+  }
+}
+
+class AccountBalance extends StatelessWidget {
+  const AccountBalance({
+    required this.balance,
+    required this.isHidden,
+    required this.currency,
+    super.key,
+    this.onToggle,
+  });
+
+  final String currency;
+  final double balance;
+  final bool isHidden;
+  final void Function()? onToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('Disponible'),
+        const SizedBox(
+          height: 10,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '$currency ${isHidden ? balance.toString().replaceAll(
+                    RegExp(r'\d'),
+                    '*',
+                  ) : balance}',
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            IconButton(
+              onPressed: onToggle,
+              icon: isHidden
+                  ? const Icon(Icons.visibility)
+                  : const Icon(Icons.visibility_off),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
