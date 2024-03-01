@@ -107,7 +107,6 @@ class HomeScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   '${movement.sign}${movement.amount.toGs(
-                                    movement.currency,
                                     location: CurrencyLocation.end,
                                   )}',
                                   style: const TextStyle(

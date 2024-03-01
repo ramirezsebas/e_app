@@ -58,7 +58,7 @@ class AccountBalance extends StatelessWidget {
   String _formatHiddenBalance() {
     return isHidden
         ? balance
-            .toGs(currency)
+            .toGs()
             .replaceAll(
               RegExp(r'\d'),
               '*',
@@ -67,6 +67,6 @@ class AccountBalance extends StatelessWidget {
               RegExp('.'),
               '*',
             )
-        : balance.toGs(currency);
+        : balance.toGs();
   }
 }
