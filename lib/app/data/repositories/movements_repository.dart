@@ -10,6 +10,7 @@ class MovementsRepository {
       description: 'Transferencia recibida',
       date: '20/12/2023',
       sender: 'Juan Perez',
+      type: MovementType.income,
     ),
     MovementeModel(
       image: Assets.icons.transfers.path,
@@ -18,6 +19,7 @@ class MovementsRepository {
       description: 'Transferencia recibida',
       date: '20/12/2023',
       sender: 'Juan Perez',
+      type: MovementType.income,
     ),
     MovementeModel(
       image: Assets.icons.transfers.path,
@@ -26,6 +28,7 @@ class MovementsRepository {
       description: 'Transferencia recibida',
       date: '20/12/2023',
       sender: 'Juan Perez',
+      type: MovementType.expense,
     ),
   ];
 

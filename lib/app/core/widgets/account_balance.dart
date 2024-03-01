@@ -1,5 +1,5 @@
+import 'package:e_app/app/core/extensions/formatter_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class AccountBalance extends StatelessWidget {
   const AccountBalance({
@@ -56,20 +56,14 @@ class AccountBalance extends StatelessWidget {
   }
 
   String _formatHiddenBalance() {
-    final formattedBalance = NumberFormat.currency(
-      locale: 'es',
-      decimalDigits: 0,
-      symbol: currency,
-      customPattern: '\u00A4 #,###',
-    ).format(balance);
-
     return isHidden
-        ? formattedBalance
+        ? balance
+            .toCurrency(currency)
             .replaceAll(
               RegExp(r'\d'),
               '*',
             )
             .replaceAll('.', '*')
-        : formattedBalance;
+        : balance.toCurrency(currency);
   }
 }

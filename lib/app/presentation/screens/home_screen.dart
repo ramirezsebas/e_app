@@ -1,3 +1,6 @@
+// ignore_for_file: lines_longer_than_80_chars
+
+import 'package:e_app/app/core/extensions/formatter_extension.dart';
 import 'package:e_app/app/core/widgets/account_balance.dart';
 import 'package:e_app/app/core/widgets/e_app_bar.dart';
 import 'package:e_app/app/presentation/cubits/account_balance/account_balance_cubit.dart';
@@ -14,6 +17,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffF7F0ED),
       appBar: EAppBar(
         title: Assets.images.logo.image(),
         body: Container(
@@ -77,26 +81,46 @@ class HomeScreen extends StatelessWidget {
                           final movement = state.movements[index];
                           return ListTile(
                             contentPadding: EdgeInsets.zero,
-                            leading: Image.asset(movement.image),
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              child: Image.asset(
+                                movement.image,
+                              ),
+                            ),
                             title: Text(
                               movement.sender,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            subtitle: Text(movement.description),
+                            subtitle: Text(
+                              movement.description,
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                             trailing: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  '${movement.currency}. ${movement.amount}',
+                                  '${movement.sign}${movement.amount.toCurrency(
+                                    movement.currency,
+                                    location: CurrencyLocation.end,
+                                  )}',
                                   style: const TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Text(movement.date),
+                                Text(
+                                  movement.date,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ],
                             ),
                           );

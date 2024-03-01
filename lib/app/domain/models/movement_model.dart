@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+enum MovementType { income, expense }
+
 class MovementeModel extends Equatable {
   const MovementeModel({
     required this.image,
@@ -8,6 +10,7 @@ class MovementeModel extends Equatable {
     required this.description,
     required this.date,
     required this.sender,
+    required this.type,
   });
 
   factory MovementeModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +21,8 @@ class MovementeModel extends Equatable {
       description: json['description'] as String,
       date: json['date'] as String,
       sender: json['sender'] as String,
+      type:
+          json['type'] == 'income' ? MovementType.income : MovementType.expense,
     );
   }
 
@@ -27,8 +32,18 @@ class MovementeModel extends Equatable {
   final String description;
   final String date;
   final String sender;
+  final MovementType type;
+
+  String get sign => type == MovementType.income ? '+' : '-';
 
   @override
-  List<Object?> get props =>
-      [image, amount, currency, description, date, sender];
+  List<Object?> get props => [
+        image,
+        amount,
+        currency,
+        description,
+        date,
+        sender,
+        type,
+      ];
 }
