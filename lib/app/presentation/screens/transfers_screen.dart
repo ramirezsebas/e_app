@@ -1,3 +1,4 @@
+import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class TransfersScreen extends StatelessWidget {
@@ -7,8 +8,23 @@ class TransfersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Transferencias'),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Assets.images.logo.image(
+            color: Colors.black,
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            '¡Pronto podrás realizar transferencias!',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
