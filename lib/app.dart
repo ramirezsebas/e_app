@@ -1,4 +1,5 @@
 import 'package:e_app/app/presentation/screens/screens.dart';
+import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
@@ -32,27 +33,30 @@ class _MainScreenState extends State<MainScreen> {
         title: const Text('E App'),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color(0xffF7F0ED),
         currentIndex: _selectedScreenIndex,
         onTap: (index) {
           setState(() {
             _selectedScreenIndex = index;
           });
         },
-        items: const [
+        elevation: 100,
+        type: BottomNavigationBarType.fixed,
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Assets.icons.home.image(),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
+            icon: Assets.icons.transfers.image(),
             label: 'Transferencias',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
+            icon: Assets.icons.analisis.image(),
             label: 'Analisis',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
+            icon: Assets.icons.account.image(),
             label: 'Cuentas',
           ),
         ],
