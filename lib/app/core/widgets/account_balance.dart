@@ -45,8 +45,8 @@ class AccountBalance extends StatelessWidget {
             IconButton(
               onPressed: onToggle,
               icon: !isHidden
-                  ? const Icon(Icons.visibility)
-                  : const Icon(Icons.visibility_off),
+                  ? const Icon(Icons.visibility_outlined)
+                  : const Icon(Icons.visibility_off_outlined),
               color: Colors.white,
             ),
           ],
