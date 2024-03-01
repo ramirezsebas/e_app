@@ -1,4 +1,5 @@
 import 'package:e_app/app/data/repositories/account_repository.dart';
+import 'package:e_app/app/data/repositories/expense_repository.dart';
 import 'package:e_app/app/data/repositories/movements_repository.dart';
 import 'package:e_app/app/presentation/cubits/account_balance/account_balance_cubit.dart';
 import 'package:e_app/app/presentation/cubits/movements/movements_cubit.dart';
@@ -13,24 +14,27 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => AccountBalanceCubit(
-            accountRepository: AccountRepository(),
-          )..getAccount(),
+    return RepositoryProvider(
+      create: (context) => ExpenseRepository(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => AccountBalanceCubit(
+              accountRepository: AccountRepository(),
+            )..getAccount(),
+          ),
+          BlocProvider(
+            create: (context) => MovementsCubit(
+              movementsRepository: MovementsRepository(),
+            )..getMovements(),
+          ),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: _buildTheme(Brightness.light),
+          title: 'E App',
+          home: const MainScreen(),
         ),
-        BlocProvider(
-          create: (context) => MovementsCubit(
-            movementsRepository: MovementsRepository(),
-          )..getMovements(),
-        ),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: _buildTheme(Brightness.light),
-        title: 'E App',
-        home: const MainScreen(),
       ),
     );
   }

@@ -1,7 +1,10 @@
 import 'package:e_app/app/core/widgets/e_card.dart';
+import 'package:e_app/app/data/repositories/expense_repository.dart';
+import 'package:e_app/app/presentation/cubits/expenses/expenses_cubit.dart';
 import 'package:e_app/app/presentation/screens/expense_analytics_screen.dart';
 import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AnalisisScreen extends StatelessWidget {
   const AnalisisScreen({
@@ -76,7 +79,13 @@ class AnalisisScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute<void>(
-                        builder: (context) => const ExpenseAnalyticsScreen(),
+                        builder: (_) => BlocProvider(
+                          create: (_) => ExpensesCubit(
+                            expenseRepository:
+                                context.read<ExpenseRepository>(),
+                          )..getExpenses(),
+                          child: const ExpenseAnalyticsScreen(),
+                        ),
                       ),
                     );
                   },

@@ -50,7 +50,9 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffF7F0ED),
       appBar: AppBar(
+        backgroundColor: const Color(0xffF7F0ED),
         title: const Text('Gastos'),
         centerTitle: true,
         leading: IconButton(
@@ -62,7 +64,9 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Assets.icons.drawer.image(),
+            icon: Assets.icons.drawer.image(
+              color: const Color(0xffA6A6A6),
+            ),
           ),
         ],
       ),
