@@ -27,6 +27,7 @@ class App extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: _buildTheme(Brightness.light),
         title: 'E App',
         home: const MainScreen(),
@@ -66,23 +67,41 @@ class _MainScreenState extends State<MainScreen> {
             _selectedScreenIndex = index;
           });
         },
+        selectedItemColor: const Color(0xff888787),
+        unselectedItemColor: const Color(0xffCACACA),
         elevation: 100,
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-            icon: Assets.icons.home.image(),
+            icon: Assets.icons.home.image(
+              color: _selectedScreenIndex == 0
+                  ? const Color(0xff888787)
+                  : const Color(0xffCACACA),
+            ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Assets.icons.transfers.image(),
+            icon: Assets.icons.transfers.image(
+              color: _selectedScreenIndex == 1
+                  ? const Color(0xff888787)
+                  : const Color(0xffCACACA),
+            ),
             label: 'Transferencias',
           ),
           BottomNavigationBarItem(
-            icon: Assets.icons.analisis.image(),
+            icon: Assets.icons.analisis.image(
+              color: _selectedScreenIndex == 2
+                  ? const Color(0xff888787)
+                  : const Color(0xffCACACA),
+            ),
             label: 'Analisis',
           ),
           BottomNavigationBarItem(
-            icon: Assets.icons.account.image(),
+            icon: Assets.icons.account.image(
+              color: _selectedScreenIndex == 3
+                  ? const Color(0xff888787)
+                  : const Color(0xffCACACA),
+            ),
             label: 'Cuentas',
           ),
         ],
