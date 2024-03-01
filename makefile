@@ -3,3 +3,6 @@ format:
 
 analyze: 
 	fvm flutter analyze
+
+gen:
+	dart run build_runner build --delete-conflicting-outputs
