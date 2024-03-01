@@ -1,4 +1,5 @@
 import 'package:e_app/app/core/widgets/e_card.dart';
+import 'package:e_app/app/presentation/screens/expense_analytics_screen.dart';
 import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
@@ -55,7 +56,14 @@ class AnalisisScreen extends StatelessWidget {
                 ECard(
                   title: 'Gastos',
                   icon: Assets.icons.expense.image(),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (context) => const ExpenseAnalyticsScreen(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
