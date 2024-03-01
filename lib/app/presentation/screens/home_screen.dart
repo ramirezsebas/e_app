@@ -1,4 +1,4 @@
-import 'package:e_app/app.dart';
+import 'package:e_app/app/core/widgets/account_balance.dart';
 import 'package:e_app/app/core/widgets/e_app_bar.dart';
 import 'package:e_app/app/presentation/cubits/account_balance/account_balance_cubit.dart';
 import 'package:e_app/app/presentation/cubits/movements/movements_cubit.dart';

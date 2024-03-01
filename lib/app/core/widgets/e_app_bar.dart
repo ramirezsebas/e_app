@@ -19,9 +19,14 @@ class EAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       actions: [
-        IconButton(
-          onPressed: () {},
-          icon: Assets.icons.drawer.image(),
+        Container(
+          margin: const EdgeInsets.only(
+            right: 10,
+          ),
+          child: IconButton(
+            onPressed: () {},
+            icon: Assets.icons.drawer.image(),
+          ),
         ),
       ],
       leading: leading,
