@@ -72,6 +72,7 @@ class SelectedCategoryExpenseAnalyticsScreen extends StatelessWidget {
             ExpensesLoaded => _Body(
                 expenses: (state as ExpensesLoaded).expenses,
                 dataMap: state.dataMap,
+                imageCategory: state.imageCategory,
               ),
             ExpensesError => Center(
                 child: Text(
@@ -90,11 +91,13 @@ class _Body extends StatelessWidget {
   const _Body({
     required List<ExpenseModel> expenses,
     required Map<String, double> dataMap,
+    required this.imageCategory,
   })  : _expenses = expenses,
         _dataMap = dataMap;
 
   final List<ExpenseModel> _expenses;
   final Map<String, double> _dataMap;
+  final String imageCategory;
 
   @override
   Widget build(BuildContext context) {

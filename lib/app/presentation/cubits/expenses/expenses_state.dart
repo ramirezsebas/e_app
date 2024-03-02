@@ -15,13 +15,19 @@ final class ExpensesLoaded extends ExpensesState {
   const ExpensesLoaded({
     required this.expenses,
     required this.dataMap,
+    required this.imageCategory,
   });
 
   final List<ExpenseModel> expenses;
+  final String imageCategory;
   final Map<String, double> dataMap;
 
   @override
-  List<Object> get props => [expenses, dataMap];
+  List<Object> get props => [
+        expenses,
+        dataMap,
+        imageCategory,
+      ];
 }
 
 final class ExpensesError extends ExpensesState {
