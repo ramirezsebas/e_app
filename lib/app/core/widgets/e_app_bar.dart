@@ -45,8 +45,6 @@ class EAppBar extends StatelessWidget implements PreferredSizeWidget {
             bottomRight: Radius.circular(30),
           ),
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
             colors: <Color>[
               Color(0xffF00E51),
               Color(0xffFF6720),
