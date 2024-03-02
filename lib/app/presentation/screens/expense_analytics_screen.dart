@@ -1,8 +1,14 @@
+import 'dart:math';
+
+import 'package:e_app/app/core/constants/date_constants.dart';
 import 'package:e_app/app/core/extensions/formatter_extension.dart';
 import 'package:e_app/app/core/widgets/e_center_pie_chart_label.dart';
 import 'package:e_app/app/core/widgets/e_date_selector.dart';
-import 'package:e_app/app/domain/models/expense_model.dart';
+import 'package:e_app/app/domain/models/expense_category_model.dart';
+import 'package:e_app/app/presentation/cubits/category_expenses/categories_expenses_cubit.dart';
+
 import 'package:e_app/app/presentation/cubits/expenses/expenses_cubit.dart';
+import 'package:e_app/app/presentation/cubits/month_selector/month_selector_cubit.dart';
 import 'package:e_app/app/presentation/screens/selected_category_expense_analytics_screen.dart';
 import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
@@ -28,29 +34,6 @@ class ExpenseAnalyticsView extends StatefulWidget {
 }
 
 class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
-  final _year = '2022';
-  final _months = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ];
-  var _selectedMonth = DateTime.now().month;
-
-  Map<String, double> dataMap = {
-    'Restaurante y bares': 5,
-    'Compras': 3,
-    'Transporte': 2,
-  };
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +64,8 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
             borderRadius: BorderRadius.circular(8),
           ),
           textStyle: const TextStyle(
-            fontSize: 18,
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
           ),
           minimumSize: Size(MediaQuery.of(context).size.width * 0.9, 65),
         ),
@@ -104,17 +88,23 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
           ),
         ),
       ),
-      body: BlocBuilder<ExpensesCubit, ExpensesState>(
+      body: BlocBuilder<CategoriesExpensesCubit, CategoriesExpensesState>(
         builder: (context, state) {
           return switch (state.runtimeType) {
-            ExpensesInitial => const Center(
+            CategoriesExpensesInitial => const Center(
                 child: CircularProgressIndicator(),
               ),
-            ExpensesLoading => const Center(
+            CategoriesExpensesLoading => const Center(
                 child: CircularProgressIndicator(),
               ),
-            ExpensesLoaded => _buildBody((state as ExpensesLoaded).expenses),
-            ExpensesError => Center(
+            CategoriesExpensesLoaded => _Body(
+                expenses:
+                    (state as CategoriesExpensesLoaded).categoriesExpenses,
+                dataMap: context
+                    .read<CategoriesExpensesCubit>()
+                    .makeDataMap(state.categoriesExpenses),
+              ),
+            CategoriesExpensesError => Center(
                 child: Text((state as ExpensesError).message),
               ),
             _ => const SizedBox.shrink(),
@@ -123,20 +113,35 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
       ),
     );
   }
+}
 
-  Widget _buildBody(List<ExpenseModel> expenses) {
+class _Body extends StatelessWidget {
+  const _Body({
+    required List<ExpenseCategoryModel> expenses,
+    required Map<String, double> dataMap,
+  })  : _expenses = expenses,
+        _dataMap = dataMap;
+
+  final List<ExpenseCategoryModel> _expenses;
+  final Map<String, double> _dataMap;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(
           height: 50,
           child: EDateSelector(
-            months: _months,
-            year: _year,
-            selectedMonth: _selectedMonth,
-            onMonthSelected: (index) {
-              setState(() {
-                _selectedMonth = index + 1;
-              });
+            months: months,
+            year: year.toString(),
+            selectedMonth:
+                context.watch<MonthSelectorCubit>().state.selectedMonth!,
+            onMonthSelected: (month) {
+              context.read<MonthSelectorCubit>().selectMonth(
+                    month,
+                    (100000 + (10000000 - 100000) * Random().nextDouble())
+                        .round(),
+                  );
             },
           ),
         ),
@@ -152,7 +157,7 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
                   alignment: Alignment.center,
                   children: [
                     PieChart(
-                      dataMap: dataMap,
+                      dataMap: _dataMap,
                       legendOptions: const LegendOptions(
                         showLegends: false,
                       ),
@@ -163,19 +168,27 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
                     ),
                     Align(
                       child: ECenterPieChartLabel(
-                        label: _months[_selectedMonth - 1],
-                        description: 'Gs. 2.000.000',
+                        label: months[context
+                                .read<MonthSelectorCubit>()
+                                .state
+                                .selectedMonth! -
+                            1],
+                        description: context
+                            .read<MonthSelectorCubit>()
+                            .state
+                            .total!
+                            .toGs(),
                       ),
                     ),
                   ],
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: expenses.length,
+                    itemCount: _expenses.length,
                     itemBuilder: (context, index) {
-                      final expense = expenses[index];
+                      final expense = _expenses[index];
                       return ListTile(
-                        contentPadding: EdgeInsets.symmetric(
+                        contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20,
                         ),
                         leading: CircleAvatar(
@@ -185,16 +198,18 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
                           ),
                         ),
                         title: Text(
-                          expense.category,
+                          expense.name,
                           style: const TextStyle(
                             fontWeight: FontWeight.w400,
+                            fontSize: 12,
                           ),
                         ),
                         trailing: Text(
-                          expense.amount.toGs(),
+                          expense.total.toGs(),
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w400,
+                            fontSize: 16,
                           ),
                         ),
                       );
@@ -205,54 +220,6 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
             ),
           ),
         ),
-        // ListTile(
-        //   leading: Assets.icons.restaurantBarCategory.image(),
-        //   title: const Text(
-        //     'Restaurantes y bares',
-        //     style: TextStyle(
-        //       fontWeight: FontWeight.w400,
-        //     ),
-        //   ),
-        //   trailing: const Text(
-        //     'Gs. 2.000.000',
-        //     style: TextStyle(
-        //       color: Colors.black,
-        //       fontWeight: FontWeight.w400,
-        //     ),
-        //   ),
-        // ),
-        // ListTile(
-        //   leading: Assets.icons.shoppingCategory.image(),
-        //   title: const Text(
-        //     'Compras',
-        //     style: TextStyle(
-        //       fontWeight: FontWeight.w400,
-        //     ),
-        //   ),
-        //   trailing: const Text(
-        //     'Gs. 2.000.000',
-        //     style: TextStyle(
-        //       color: Colors.black,
-        //       fontWeight: FontWeight.w400,
-        //     ),
-        //   ),
-        // ),
-        // ListTile(
-        //   leading: Assets.icons.transportationCategory.image(),
-        //   title: const Text(
-        //     'Transporte',
-        //     style: TextStyle(
-        //       fontWeight: FontWeight.w400,
-        //     ),
-        //   ),
-        //   trailing: const Text(
-        //     'Gs. 2.000.000',
-        //     style: TextStyle(
-        //       color: Colors.black,
-        //       fontWeight: FontWeight.w400,
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }

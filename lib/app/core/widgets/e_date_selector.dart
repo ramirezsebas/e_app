@@ -30,7 +30,7 @@ class EDateSelector extends StatelessWidget {
         final month = _months[index];
         return TextButton(
           onPressed: () {
-            _onMonthSelected?.call(index);
+            _onMonthSelected?.call(index + 1);
           },
           child: Text(
             '$month $_year',

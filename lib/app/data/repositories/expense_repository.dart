@@ -1,3 +1,4 @@
+import 'package:e_app/app/domain/models/expense_category_model.dart';
 import 'package:e_app/app/domain/models/expense_model.dart';
 import 'package:e_app/gen/assets.gen.dart';
 
@@ -43,8 +44,35 @@ class ExpenseRepository {
       image: Assets.icons.transportationCategory.path,
     ),
   ];
-  Future<List<ExpenseModel>> getExpenses() async {
+
+  final List<ExpenseCategoryModel> expensesCategory = [
+    ExpenseCategoryModel(
+      id: '1',
+      name: 'Restaurantes y bares',
+      image: Assets.icons.restaurantBarCategory.path,
+      total: 412000,
+    ),
+    ExpenseCategoryModel(
+      id: '2',
+      name: 'Compras',
+      image: Assets.icons.shoppingCategory.path,
+      total: 165549,
+    ),
+    ExpenseCategoryModel(
+      id: '3',
+      name: 'Transporte',
+      image: Assets.icons.transportationCategory.path,
+      total: 79800,
+    ),
+  ];
+
+  Future<List<ExpenseCategoryModel>> getAllExpensesCategory() async {
     await Future<void>.delayed(const Duration(seconds: 2));
-    return expenses;
+    return expensesCategory;
+  }
+
+  Future<List<ExpenseModel>> getExpensesByCategory(String category) async {
+    await Future<void>.delayed(const Duration(seconds: 2));
+    return expenses.where((element) => element.category == category).toList();
   }
 }

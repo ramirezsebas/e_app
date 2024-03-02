@@ -13,13 +13,25 @@ class ExpensesCubit extends Cubit<ExpensesState> {
 
   final ExpenseRepository _expenseRepository;
 
-  Future<void> getExpenses() async {
+  Future<void> getExpenses(String category) async {
     emit(ExpensesLoading());
     try {
-      final expenses = await _expenseRepository.getExpenses();
+      final expenses = await _expenseRepository.getExpensesByCategory(category);
       emit(ExpensesLoaded(expenses));
     } catch (e) {
       emit(ExpensesError(e.toString()));
     }
+  }
+
+  Map<String, double> makeDataMap(List<ExpenseModel> expenses) {
+    final dataMap = <String, double>{};
+    for (final element in expenses) {
+      if (dataMap.containsKey(element.category)) {
+        dataMap[element.category] = dataMap[element.category]! + element.amount;
+      } else {
+        dataMap[element.category] = element.amount.toDouble();
+      }
+    }
+    return dataMap;
   }
 }
