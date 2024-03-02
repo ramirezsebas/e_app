@@ -8,7 +8,8 @@ class ExpenseRepository {
       id: '1',
       amount: 412000,
       currency: 'Gs',
-      description: 'Restaurantes y bares',
+      description: 'Café de aca - ASU',
+      referenceCode: '123456',
       date: DateTime(
         2022,
         6,
@@ -21,7 +22,8 @@ class ExpenseRepository {
       id: '2',
       amount: 165549,
       currency: 'Gs',
-      description: 'Compras',
+      referenceCode: '123456',
+      description: 'Supermercado Stock - ASU',
       date: DateTime(
         2022,
         6,
@@ -34,7 +36,8 @@ class ExpenseRepository {
       id: '3',
       amount: 79800,
       currency: 'Gs',
-      description: 'Transporte',
+      referenceCode: '123456',
+      description: 'Uber - ASU',
       date: DateTime(
         2022,
         6,

@@ -12,12 +12,16 @@ final class ExpensesInitial extends ExpensesState {}
 final class ExpensesLoading extends ExpensesState {}
 
 final class ExpensesLoaded extends ExpensesState {
-  const ExpensesLoaded(this.expenses);
+  const ExpensesLoaded({
+    required this.expenses,
+    required this.dataMap,
+  });
 
   final List<ExpenseModel> expenses;
+  final Map<String, double> dataMap;
 
   @override
-  List<Object> get props => [expenses];
+  List<Object> get props => [expenses, dataMap];
 }
 
 final class ExpensesError extends ExpensesState {

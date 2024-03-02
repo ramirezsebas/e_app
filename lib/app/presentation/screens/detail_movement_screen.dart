@@ -1,9 +1,24 @@
+import 'package:e_app/app/core/extensions/date_extension.dart';
+import 'package:e_app/app/core/extensions/formatter_extension.dart';
 import 'package:e_app/app/core/widgets/e_app_bar.dart';
 import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class DetailMovementScreen extends StatelessWidget {
-  const DetailMovementScreen({super.key});
+  const DetailMovementScreen({
+    required this.description,
+    required this.amount,
+    required this.category,
+    required this.date,
+    required this.referenceCode,
+    super.key,
+  });
+
+  final String description;
+  final num amount;
+  final String category;
+  final DateTime date;
+  final String referenceCode;
 
   @override
   Widget build(BuildContext context) {
@@ -28,20 +43,20 @@ class DetailMovementScreen extends StatelessWidget {
           margin: const EdgeInsets.only(
             bottom: 80,
           ),
-          child: const Column(
+          child: Column(
             children: [
               Text(
-                'Café de aca',
-                style: TextStyle(
+                description,
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
-                'Gs. 2.500.000',
-                style: TextStyle(
+                amount.toGs(),
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -52,22 +67,22 @@ class DetailMovementScreen extends StatelessWidget {
         ),
       ),
       body: ListView(
-        children: const [
+        children: [
           ListTile(
-            title: Text('Operación:'),
-            trailing: Text('Transferencia a terceros'),
+            title: const Text('Operación:'),
+            trailing: Text(category),
           ),
           ListTile(
-            title: Text('Fecha:'),
-            trailing: Text('12/12/2021'),
+            title: const Text('Fecha:'),
+            trailing: Text(date.toFormattedString()),
           ),
           ListTile(
-            title: Text('Hora:'),
-            trailing: Text('12:00'),
+            title: const Text('Hora:'),
+            trailing: Text(date.toTime()),
           ),
           ListTile(
-            title: Text('Cod. de referencia:'),
-            trailing: Text('1234567890'),
+            title: const Text('Cod. de referencia:'),
+            trailing: Text(referenceCode),
           ),
         ],
       ),

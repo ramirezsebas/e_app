@@ -9,6 +9,7 @@ class ExpenseModel extends Equatable {
     required this.date,
     required this.category,
     required this.image,
+    required this.referenceCode,
   });
 
   final String id;
@@ -18,6 +19,7 @@ class ExpenseModel extends Equatable {
   final DateTime date;
   final String category;
   final String image;
+  final String referenceCode;
 
   @override
   List<Object?> get props => [
@@ -28,5 +30,6 @@ class ExpenseModel extends Equatable {
         date,
         category,
         image,
+        referenceCode,
       ];
 }

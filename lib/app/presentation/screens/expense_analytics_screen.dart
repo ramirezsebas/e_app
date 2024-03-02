@@ -4,6 +4,7 @@ import 'package:e_app/app/core/constants/date_constants.dart';
 import 'package:e_app/app/core/extensions/formatter_extension.dart';
 import 'package:e_app/app/core/widgets/e_center_pie_chart_label.dart';
 import 'package:e_app/app/core/widgets/e_date_selector.dart';
+import 'package:e_app/app/data/repositories/expense_repository.dart';
 import 'package:e_app/app/domain/models/expense_category_model.dart';
 import 'package:e_app/app/presentation/cubits/category_expenses/categories_expenses_cubit.dart';
 
@@ -73,10 +74,18 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
           Navigator.push(
             context,
             MaterialPageRoute<void>(
-              builder: (context) => SelectedCategoryExpenseAnalyticsView(
-                category: 'Restaurantes y bares',
-                spending: 'Gs. 2.000.000',
-                icon: Assets.icons.restaurantBarCategory.path,
+              builder: (_) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (_) => ExpensesCubit(
+                      expenseRepository: context.read<ExpenseRepository>(),
+                    )..getExpenses('Restaurantes y bares'),
+                  ),
+                  BlocProvider(
+                    create: (_) => context.read<MonthSelectorCubit>(),
+                  ),
+                ],
+                child: const SelectedCategoryExpenseAnalyticsScreen(),
               ),
             ),
           );

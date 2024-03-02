@@ -1,79 +1,31 @@
+import 'dart:math';
+
+import 'package:e_app/app/core/constants/date_constants.dart';
+import 'package:e_app/app/core/extensions/date_extension.dart';
+import 'package:e_app/app/core/extensions/formatter_extension.dart';
 import 'package:e_app/app/core/widgets/e_center_pie_chart_label.dart';
 import 'package:e_app/app/core/widgets/e_date_selector.dart';
+import 'package:e_app/app/domain/models/expense_model.dart';
+import 'package:e_app/app/presentation/cubits/expenses/expenses_cubit.dart';
+import 'package:e_app/app/presentation/cubits/month_selector/month_selector_cubit.dart';
 import 'package:e_app/app/presentation/screens/detail_movement_screen.dart';
 import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:pie_chart/pie_chart.dart';
 
 class SelectedCategoryExpenseAnalyticsScreen extends StatelessWidget {
   const SelectedCategoryExpenseAnalyticsScreen({
-    required this.category,
-    required this.spending,
-    required this.icon,
     super.key,
   });
-
-  final String category;
-  final String spending;
-  final String icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return SelectedCategoryExpenseAnalyticsView(
-      category: category,
-      spending: spending,
-      icon: icon,
-    );
-  }
-}
-
-class SelectedCategoryExpenseAnalyticsView extends StatefulWidget {
-  const SelectedCategoryExpenseAnalyticsView({
-    required this.category,
-    required this.spending,
-    required this.icon,
-    super.key,
-  });
-
-  final String category;
-  final String spending;
-  final String icon;
-
-  @override
-  State<SelectedCategoryExpenseAnalyticsView> createState() =>
-      _ExpenseAnalyticsViewState();
-}
-
-class _ExpenseAnalyticsViewState
-    extends State<SelectedCategoryExpenseAnalyticsView> {
-  final _year = '2022';
-  final _months = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ];
-  var _selectedMonth = DateTime.now().month;
-
-  Map<String, double> dataMap = {
-    'Restaurante y bares': 5,
-    'Compras': 3,
-    'Transporte': 2,
-  };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xffF7F0ED),
       appBar: AppBar(
+        backgroundColor: const Color(0xffF7F0ED),
         title: const Text('Gastos'),
         centerTitle: true,
         leading: IconButton(
@@ -100,14 +52,7 @@ class _ExpenseAnalyticsViewState
           ),
           minimumSize: Size(MediaQuery.of(context).size.width * 0.9, 65),
         ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute<void>(
-              builder: (context) => const DetailMovementScreen(),
-            ),
-          );
-        },
+        onPressed: () {},
         child: const Text(
           'Ver Extracto',
           style: TextStyle(
@@ -115,101 +60,165 @@ class _ExpenseAnalyticsViewState
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 50,
-              child: EDateSelector(
-                months: _months,
-                year: _year,
-                selectedMonth: _selectedMonth,
-                onMonthSelected: (index) {
-                  setState(() {
-                    _selectedMonth = index + 1;
-                  });
-                },
+      body: BlocBuilder<ExpensesCubit, ExpensesState>(
+        builder: (context, state) {
+          return switch (state.runtimeType) {
+            ExpensesInitial => const Center(
+                child: CircularProgressIndicator(),
               ),
-            ),
-            const SizedBox(height: 20),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                PieChart(
-                  dataMap: dataMap,
-                  legendOptions: const LegendOptions(
-                    showLegends: false,
-                  ),
-                  chartValuesOptions: const ChartValuesOptions(
-                    showChartValueBackground: false,
-                    showChartValues: false,
-                  ),
+            ExpensesLoading => const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ExpensesLoaded => _Body(
+                expenses: (state as ExpensesLoaded).expenses,
+                dataMap: state.dataMap,
+              ),
+            ExpensesError => Center(
+                child: Text(
+                  (state as ExpensesError).message,
                 ),
-                Align(
-                  child: ECenterPieChartLabel(
-                    label: widget.category,
-                    description: widget.spending,
+              ),
+            _ => const SizedBox.shrink(),
+          };
+        },
+      ),
+    );
+  }
+}
+
+class _Body extends StatelessWidget {
+  const _Body({
+    required List<ExpenseModel> expenses,
+    required Map<String, double> dataMap,
+  })  : _expenses = expenses,
+        _dataMap = dataMap;
+
+  final List<ExpenseModel> _expenses;
+  final Map<String, double> _dataMap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 50,
+          child: EDateSelector(
+            months: months,
+            year: year.toString(),
+            selectedMonth:
+                context.watch<MonthSelectorCubit>().state.selectedMonth!,
+            onMonthSelected: (month) {
+              context.read<MonthSelectorCubit>().selectMonth(
+                    month,
+                    (100000 + (10000000 - 100000) * Random().nextDouble())
+                        .round(),
+                  );
+            },
+          ),
+        ),
+        const SizedBox(height: 20),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
+            child: Column(
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    PieChart(
+                      dataMap: _dataMap,
+                      legendOptions: const LegendOptions(
+                        showLegends: false,
+                      ),
+                      chartValuesOptions: const ChartValuesOptions(
+                        showChartValueBackground: false,
+                        showChartValues: false,
+                      ),
+                    ),
+                    Align(
+                      child: ECenterPieChartLabel(
+                        label: months[context
+                                .read<MonthSelectorCubit>()
+                                .state
+                                .selectedMonth! -
+                            1],
+                        description: context
+                            .read<MonthSelectorCubit>()
+                            .state
+                            .total!
+                            .toGs(),
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _expenses.length,
+                    itemBuilder: (context, index) {
+                      final expense = _expenses[index];
+                      return ListTile(
+                        onTap: () {
+                          final expense = _expenses[index];
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (context) => DetailMovementScreen(
+                                description: expense.description,
+                                amount: expense.amount,
+                                category: expense.category,
+                                date: expense.date,
+                                referenceCode: expense.referenceCode,
+                              ),
+                            ),
+                          );
+                        },
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: Image.asset(
+                            expense.image,
+                          ),
+                        ),
+                        title: Text(
+                          expense.description,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                          ),
+                        ),
+                        trailing: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              expense.amount.toGs(),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(
+                              expense.date.toFormattedString(),
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
             ),
-            ListTile(
-              leading: Image(
-                image: AssetImage(widget.icon),
-              ),
-              title: const Text(
-                'Restaurantes y bares',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              trailing: const Text(
-                'Gs. 2.000.000',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Image(
-                image: AssetImage(widget.icon),
-              ),
-              title: const Text(
-                'Compras',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              trailing: const Text(
-                'Gs. 2.000.000',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Image(
-                image: AssetImage(widget.icon),
-              ),
-              title: const Text(
-                'Transporte',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              trailing: const Text(
-                'Gs. 2.000.000',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

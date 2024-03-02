@@ -17,7 +17,7 @@ class ExpensesCubit extends Cubit<ExpensesState> {
     emit(ExpensesLoading());
     try {
       final expenses = await _expenseRepository.getExpensesByCategory(category);
-      emit(ExpensesLoaded(expenses));
+      emit(ExpensesLoaded(expenses: expenses, dataMap: makeDataMap(expenses)));
     } catch (e) {
       emit(ExpensesError(e.toString()));
     }
