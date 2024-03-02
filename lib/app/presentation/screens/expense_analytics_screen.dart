@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'dart:math';
 
 import 'package:e_app/app/core/constants/date_constants.dart';
@@ -70,23 +72,7 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
           ),
           minimumSize: Size(MediaQuery.of(context).size.width * 0.9, 65),
         ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute<void>(
-              builder: (_) => MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (_) => ExpensesCubit(
-                      expenseRepository: context.read<ExpenseRepository>(),
-                    )..getExpenses('Restaurantes y bares'),
-                  ),
-                ],
-                child: const SelectedCategoryExpenseAnalyticsScreen(),
-              ),
-            ),
-          );
-        },
+        onPressed: () {},
         child: const Text(
           'Ver Extracto',
           style: TextStyle(
@@ -194,6 +180,25 @@ class _Body extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final expense = _expenses[index];
                       return ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (_) => MultiBlocProvider(
+                                providers: [
+                                  BlocProvider(
+                                    create: (_) => ExpensesCubit(
+                                      expenseRepository:
+                                          context.read<ExpenseRepository>(),
+                                    )..getExpenses(expense.name),
+                                  ),
+                                ],
+                                child:
+                                    const SelectedCategoryExpenseAnalyticsScreen(),
+                              ),
+                            ),
+                          );
+                        },
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20,
                         ),
