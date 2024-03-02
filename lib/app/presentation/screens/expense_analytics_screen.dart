@@ -81,9 +81,6 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
                       expenseRepository: context.read<ExpenseRepository>(),
                     )..getExpenses('Restaurantes y bares'),
                   ),
-                  BlocProvider(
-                    create: (_) => context.read<MonthSelectorCubit>(),
-                  ),
                 ],
                 child: const SelectedCategoryExpenseAnalyticsScreen(),
               ),

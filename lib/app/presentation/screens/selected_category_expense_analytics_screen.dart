@@ -186,8 +186,15 @@ class _Body extends StatelessWidget {
                         title: Text(
                           expense.description,
                           style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        subtitle: Text(
+                          expense.category,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         trailing: Column(

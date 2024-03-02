@@ -67,22 +67,88 @@ class DetailMovementScreen extends StatelessWidget {
         ),
       ),
       body: ListView(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 20,
+        ),
         children: [
           ListTile(
-            title: const Text('Operación:'),
-            trailing: Text(category),
+            title: const Text(
+              'Operación:',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            trailing: Text(
+              category,
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
           ),
           ListTile(
-            title: const Text('Fecha:'),
-            trailing: Text(date.toFormattedString()),
+            title: const Text(
+              'Fecha:',
+              style: TextStyle(
+                color: Color(
+                  0xff888787,
+                ),
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+              ),
+            ),
+            trailing: Text(
+              date.toFormattedString(),
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
+            ),
           ),
           ListTile(
-            title: const Text('Hora:'),
-            trailing: Text(date.toTime()),
+            title: const Text(
+              'Hora:',
+              style: TextStyle(
+                color: Color(
+                  0xff888787,
+                ),
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+              ),
+            ),
+            trailing: Text(
+              date.toTime(),
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
+            ),
           ),
           ListTile(
-            title: const Text('Cod. de referencia:'),
-            trailing: Text(referenceCode),
+            title: const Text(
+              'Cod. de referencia:',
+              style: TextStyle(
+                color: Color(
+                  0xff888787,
+                ),
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+              ),
+            ),
+            trailing: Text(
+              referenceCode,
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
+            ),
           ),
         ],
       ),

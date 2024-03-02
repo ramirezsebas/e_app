@@ -1,7 +1,6 @@
 import 'package:e_app/app/core/widgets/e_card.dart';
 import 'package:e_app/app/data/repositories/expense_repository.dart';
 import 'package:e_app/app/presentation/cubits/category_expenses/categories_expenses_cubit.dart';
-import 'package:e_app/app/presentation/cubits/month_selector/month_selector_cubit.dart';
 import 'package:e_app/app/presentation/screens/expense_analytics_screen.dart';
 import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
@@ -82,10 +81,6 @@ class AnalisisScreen extends StatelessWidget {
                       MaterialPageRoute<void>(
                         builder: (_) => MultiBlocProvider(
                           providers: [
-                            BlocProvider(
-                              create: (_) =>
-                                  MonthSelectorCubit()..init(2000000),
-                            ),
                             BlocProvider(
                               create: (_) => CategoriesExpensesCubit(
                                 expenseRepository:

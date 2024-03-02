@@ -2,6 +2,7 @@ import 'package:e_app/app/data/repositories/account_repository.dart';
 import 'package:e_app/app/data/repositories/expense_repository.dart';
 import 'package:e_app/app/data/repositories/movements_repository.dart';
 import 'package:e_app/app/presentation/cubits/account_balance/account_balance_cubit.dart';
+import 'package:e_app/app/presentation/cubits/month_selector/month_selector_cubit.dart';
 import 'package:e_app/app/presentation/cubits/movements/movements_cubit.dart';
 import 'package:e_app/app/presentation/screens/screens.dart';
 import 'package:e_app/gen/assets.gen.dart';
@@ -27,6 +28,9 @@ class App extends StatelessWidget {
             create: (context) => MovementsCubit(
               movementsRepository: MovementsRepository(),
             )..getMovements(),
+          ),
+          BlocProvider(
+            create: (_) => MonthSelectorCubit()..init(2000000),
           ),
         ],
         child: MaterialApp(
