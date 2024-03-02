@@ -37,7 +37,9 @@ class SelectedCategoryExpenseAnalyticsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Assets.icons.drawer.image(),
+            icon: Assets.icons.drawer.image(
+              color: const Color(0xffA6A6A6),
+            ),
           ),
         ],
       ),
