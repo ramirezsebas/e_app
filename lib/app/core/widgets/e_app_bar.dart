@@ -25,13 +25,9 @@ class EAppBar extends StatelessWidget implements PreferredSizeWidget {
           margin: const EdgeInsets.only(
             right: 10,
           ),
-          child: Builder(
-            builder: (context) {
-              return IconButton(
-                onPressed: onDrawerTap,
-                icon: Assets.icons.drawer.image(),
-              );
-            },
+          child: IconButton(
+            onPressed: onDrawerTap,
+            icon: Assets.icons.drawer.image(),
           ),
         ),
       ],

@@ -1,4 +1,3 @@
-import 'package:e_app/app.dart';
 import 'package:e_app/app/core/extensions/date_extension.dart';
 import 'package:e_app/app/core/extensions/formatter_extension.dart';
 import 'package:e_app/app/core/widgets/e_app_bar.dart';
