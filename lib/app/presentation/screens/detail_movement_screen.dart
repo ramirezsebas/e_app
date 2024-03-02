@@ -1,8 +1,12 @@
+import 'package:e_app/app.dart';
 import 'package:e_app/app/core/extensions/date_extension.dart';
 import 'package:e_app/app/core/extensions/formatter_extension.dart';
 import 'package:e_app/app/core/widgets/e_app_bar.dart';
+import 'package:e_app/app/core/widgets/e_drawer.dart';
+import 'package:e_app/app/presentation/cubits/bottom_navigation/bottom_navigation_cubit.dart';
 import 'package:e_app/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DetailMovementScreen extends StatelessWidget {
   const DetailMovementScreen({
@@ -23,47 +27,63 @@ class DetailMovementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EAppBar(
-        leading: IconButton(
-          icon: Assets.icons.backArrow.image(
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text(
-          'Movimientos',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        body: Container(
-          margin: const EdgeInsets.only(
-            bottom: 80,
-          ),
-          child: Column(
-            children: [
-              Text(
-                description,
-                style: const TextStyle(
-                  fontSize: 20,
+      endDrawer: EDrawer(
+        onDrawerTap: (index) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+          context.read<BottomNavigationCubit>().updateIndex(index);
+        },
+      ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(300),
+        child: Builder(
+          builder: (context) {
+            return EAppBar(
+              onDrawerTap: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              leading: IconButton(
+                icon: Assets.icons.backArrow.image(
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: const Text(
+                'Movimientos',
+                style: TextStyle(
+                  color: Colors.white,
                   fontWeight: FontWeight.w500,
-                  color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 10),
-              Text(
-                amount.toGs(),
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+              body: Container(
+                margin: const EdgeInsets.only(
+                  bottom: 80,
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      description,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      amount.toGs(),
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
       body: ListView(

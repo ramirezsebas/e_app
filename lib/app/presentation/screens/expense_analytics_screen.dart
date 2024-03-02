@@ -6,8 +6,10 @@ import 'package:e_app/app/core/constants/date_constants.dart';
 import 'package:e_app/app/core/extensions/formatter_extension.dart';
 import 'package:e_app/app/core/widgets/e_center_pie_chart_label.dart';
 import 'package:e_app/app/core/widgets/e_date_selector.dart';
+import 'package:e_app/app/core/widgets/e_drawer.dart';
 import 'package:e_app/app/data/repositories/expense_repository.dart';
 import 'package:e_app/app/domain/models/expense_category_model.dart';
+import 'package:e_app/app/presentation/cubits/bottom_navigation/bottom_navigation_cubit.dart';
 import 'package:e_app/app/presentation/cubits/category_expenses/categories_expenses_cubit.dart';
 
 import 'package:e_app/app/presentation/cubits/expenses/expenses_cubit.dart';
@@ -40,6 +42,12 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: EDrawer(
+        onDrawerTap: (index) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+          context.read<BottomNavigationCubit>().updateIndex(index);
+        },
+      ),
       backgroundColor: const Color(0xffF7F0ED),
       appBar: AppBar(
         backgroundColor: const Color(0xffF7F0ED),
@@ -52,11 +60,17 @@ class _ExpenseAnalyticsViewState extends State<ExpenseAnalyticsView> {
           },
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Assets.icons.drawer.image(
-              color: const Color(0xffA6A6A6),
-            ),
+          Builder(
+            builder: (context) {
+              return IconButton(
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+                icon: Assets.icons.drawer.image(
+                  color: const Color(0xffA6A6A6),
+                ),
+              );
+            },
           ),
         ],
       ),

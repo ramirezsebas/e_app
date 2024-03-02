@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class EAppBar extends StatelessWidget implements PreferredSizeWidget {
   const EAppBar({
     required this.title,
+    required this.onDrawerTap,
     this.leading,
     this.body,
     super.key,
@@ -12,6 +13,7 @@ class EAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget title;
   final Widget? leading;
   final Widget? body;
+  final VoidCallback onDrawerTap;
 
   static const _height = 300.0;
 
@@ -23,9 +25,13 @@ class EAppBar extends StatelessWidget implements PreferredSizeWidget {
           margin: const EdgeInsets.only(
             right: 10,
           ),
-          child: IconButton(
-            onPressed: () {},
-            icon: Assets.icons.drawer.image(),
+          child: Builder(
+            builder: (context) {
+              return IconButton(
+                onPressed: onDrawerTap,
+                icon: Assets.icons.drawer.image(),
+              );
+            },
           ),
         ),
       ],

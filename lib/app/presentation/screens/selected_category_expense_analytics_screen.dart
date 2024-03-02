@@ -5,7 +5,9 @@ import 'package:e_app/app/core/extensions/date_extension.dart';
 import 'package:e_app/app/core/extensions/formatter_extension.dart';
 import 'package:e_app/app/core/widgets/e_center_pie_chart_label.dart';
 import 'package:e_app/app/core/widgets/e_date_selector.dart';
+import 'package:e_app/app/core/widgets/e_drawer.dart';
 import 'package:e_app/app/domain/models/expense_model.dart';
+import 'package:e_app/app/presentation/cubits/bottom_navigation/bottom_navigation_cubit.dart';
 import 'package:e_app/app/presentation/cubits/expenses/expenses_cubit.dart';
 import 'package:e_app/app/presentation/cubits/month_selector/month_selector_cubit.dart';
 import 'package:e_app/app/presentation/screens/detail_movement_screen.dart';
@@ -23,6 +25,12 @@ class SelectedCategoryExpenseAnalyticsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: EDrawer(
+        onDrawerTap: (index) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+          context.read<BottomNavigationCubit>().updateIndex(index);
+        },
+      ),
       backgroundColor: const Color(0xffF7F0ED),
       appBar: AppBar(
         backgroundColor: const Color(0xffF7F0ED),
@@ -35,11 +43,17 @@ class SelectedCategoryExpenseAnalyticsScreen extends StatelessWidget {
           },
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Assets.icons.drawer.image(
-              color: const Color(0xffA6A6A6),
-            ),
+          Builder(
+            builder: (context) {
+              return IconButton(
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+                icon: Assets.icons.drawer.image(
+                  color: const Color(0xffA6A6A6),
+                ),
+              );
+            },
           ),
         ],
       ),
