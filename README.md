@@ -68,3 +68,7 @@ Siga estos pasos para generar la APK:
 ## Contacto
 
 Si tiene algún problema o necesita ayuda, no dude en contactarme a través de correo electrónico a <ramirezmatias946@gmail.com>.
+
+### Observación
+
+- Se uso libreria piechart, por lo tanto no se navega mediante el pie chart sino del listado de movimientos
