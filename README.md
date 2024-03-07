@@ -48,6 +48,8 @@ Siga estos pasos para generar la APK:
     - Si hay alguna configuración adicional específica del proyecto, asegúrese de configurarla según sea necesario.
 
 4. **Generación de la APK:**
+    - Debe crear el archivo key.properties (Podes usar make build-config)
+    - Agregar en android/app/ el keystore_name.keystore (Enviado por correo)
     - En la terminal, navegue hasta el directorio del proyecto y ejecute el siguiente comando:
 
     ```bash
